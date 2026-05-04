@@ -3,6 +3,7 @@
 A full-stack web app for teams to manage projects, assign tasks, and track progress with role-based access.
 
 **Live URL:** Pending Railway deployment  
+**GitHub repo:** https://github.com/Shubhamisl/ethara-task-manager  
 **Demo credentials:** `admin@demo.com` / `demo1234`  
 **Demo video:** Pending recording
 
@@ -58,3 +59,13 @@ pnpm lint
 pnpm tsc --noEmit
 pnpm build
 ```
+
+## Deployment Status
+
+The GitHub repo is public. Railway deployment is pending Railway authentication and a provisioned Postgres database. Configure Railway with:
+
+- Build command: `pnpm install --frozen-lockfile && pnpm build`
+- Start command: `pnpm start`
+- Variables: `DATABASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`
+
+After deployment, run `pnpm db:seed` once in the Railway service shell.
