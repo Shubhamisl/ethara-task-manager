@@ -3,10 +3,20 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+const PROJECT_COLORS = [
+  "#3F52C9",
+  "#5E3AAE",
+  "#1F6E7A",
+  "#1F7A4D",
+  "#95590C",
+  "#B0352B",
+  "#9B2B6E",
+];
+
 export default function NewProjectDialog() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState({ name: "", description: "" });
+  const [form, setForm] = useState({ name: "", description: "", color: "#3F52C9" });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,6 +41,7 @@ export default function NewProjectDialog() {
 
     const project = await response.json();
     setOpen(false);
+    setForm({ name: "", description: "", color: "#3F52C9" });
     router.push(`/projects/${project.id}`);
     router.refresh();
   }
@@ -40,63 +51,149 @@ export default function NewProjectDialog() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="rounded-md bg-slate-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+        className="btn btn-primary"
       >
+        <svg width="13" height="13" viewBox="0 0 15 15" fill="none">
+          <path
+            d="M7.5 2V13M2 7.5H13"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+        </svg>
         New project
       </button>
-      {open ? (
-        <div className="fixed inset-0 z-20 grid place-items-center bg-slate-950/40 p-4">
+
+      {open && (
+        <div className="dialog-backdrop" onClick={() => setOpen(false)}>
           <form
+            className="dialog"
             onSubmit={submit}
-            className="w-full max-w-md space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
           >
-            <div>
-              <h2 className="text-lg font-semibold">New project</h2>
-              <p className="text-sm text-slate-500">
-                Create a shared space for tasks and members.
-              </p>
+            <div className="dialog-head">
+              <div className="dialog-title">Create project</div>
+              <div className="dialog-subtitle">
+                Group tasks, members, and milestones.
+              </div>
             </div>
-            <label className="block space-y-2 text-sm font-medium text-slate-700">
-              <span>Name</span>
-              <input
-                className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
-                value={form.name}
-                onChange={(event) =>
-                  setForm({ ...form, name: event.target.value })
-                }
-                required
-              />
-            </label>
-            <label className="block space-y-2 text-sm font-medium text-slate-700">
-              <span>Description</span>
-              <textarea
-                className="min-h-24 w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
-                value={form.description}
-                onChange={(event) =>
-                  setForm({ ...form, description: event.target.value })
-                }
-              />
-            </label>
-            {error ? <p className="text-sm text-red-600">{error}</p> : null}
-            <div className="flex justify-end gap-2">
+
+            <div className="dialog-body">
+              <div className="field">
+                <label className="field-label" htmlFor="proj-name">
+                  Project name
+                </label>
+                <input
+                  className="input"
+                  id="proj-name"
+                  placeholder="e.g. Q3 launch"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  required
+                  autoFocus
+                />
+              </div>
+
+              <div className="field">
+                <label className="field-label" htmlFor="proj-desc">
+                  Description{" "}
+                  <span style={{ color: "var(--ink-7)", fontWeight: 400 }}>
+                    (optional)
+                  </span>
+                </label>
+                <textarea
+                  className="textarea"
+                  id="proj-desc"
+                  placeholder="What is this project about?"
+                  value={form.description}
+                  onChange={(e) =>
+                    setForm({ ...form, description: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="field">
+                <label className="field-label">Color</label>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    height: 36,
+                    padding: "0 10px",
+                    background: "var(--white)",
+                    border: "1px solid var(--ink-3)",
+                    borderRadius: 6,
+                    boxShadow: "var(--shadow-sm)",
+                  }}
+                >
+                  {PROJECT_COLORS.map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      onClick={() => setForm({ ...form, color: c })}
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 4,
+                        background: c,
+                        border:
+                          c === form.color
+                            ? "2px solid var(--ink-12)"
+                            : "2px solid transparent",
+                        boxShadow:
+                          c === form.color ? "0 0 0 2px var(--white) inset" : "none",
+                        padding: 0,
+                        cursor: "pointer",
+                        flexShrink: 0,
+                        transition: "transform 80ms",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.transform = "scale(1.15)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.transform = "scale(1)")
+                      }
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {error && (
+                <div
+                  style={{
+                    fontSize: 13,
+                    color: "var(--red-9)",
+                    background: "var(--red-2)",
+                    border: "1px solid var(--red-3)",
+                    borderRadius: 6,
+                    padding: "8px 12px",
+                  }}
+                >
+                  {error}
+                </div>
+              )}
+            </div>
+
+            <div className="dialog-foot">
               <button
                 type="button"
+                className="btn btn-ghost btn-sm"
                 onClick={() => setOpen(false)}
-                className="h-9 rounded-md border border-slate-300 px-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={busy}
-                className="h-9 rounded-md bg-slate-950 px-3 text-sm font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="btn btn-primary btn-sm"
               >
-                {busy ? "Creating..." : "Create"}
+                {busy ? "Creating…" : "Create project"}
               </button>
             </div>
           </form>
         </div>
-      ) : null}
+      )}
     </>
   );
 }

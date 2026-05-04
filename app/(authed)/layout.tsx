@@ -1,5 +1,6 @@
-import Nav from "@/components/nav";
+import Sidebar from "@/components/sidebar";
 import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
 
 export default async function AuthedLayout({
@@ -10,15 +11,40 @@ export default async function AuthedLayout({
   const session = await auth();
   if (!session?.user) redirect("/login");
 
+  const userId = session.user.id!;
+
+  const projects = await prisma.project.findMany({
+    where: { memberships: { some: { userId } } },
+    select: { id: true, name: true },
+    orderBy: { updatedAt: "desc" },
+    take: 20,
+  });
+
   return (
-    <div className="min-h-screen bg-slate-100">
-      <Nav
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "248px 1fr",
+        height: "100vh",
+        overflow: "hidden",
+        background: "var(--ink-0)",
+      }}
+    >
+      <Sidebar
         user={{
-          email: session.user.email ?? "",
           name: session.user.name ?? "User",
+          email: session.user.email ?? "",
         }}
+        projects={projects}
       />
-      <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6">
+      <main
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100vh",
+          overflow: "hidden",
+        }}
+      >
         {children}
       </main>
     </div>

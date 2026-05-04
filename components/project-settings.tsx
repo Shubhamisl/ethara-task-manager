@@ -14,11 +14,13 @@ export default function ProjectSettings({
   const [form, setForm] = useState(initial);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
 
   async function save(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
     setError(null);
+    setSaved(false);
 
     const response = await fetch(`/api/projects/${projectId}`, {
       method: "PATCH",
@@ -34,6 +36,7 @@ export default function ProjectSettings({
       return;
     }
 
+    setSaved(true);
     router.refresh();
   }
 
@@ -55,50 +58,201 @@ export default function ProjectSettings({
   }
 
   return (
-    <div className="space-y-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-      <form onSubmit={save} className="space-y-4">
-        <div>
-          <h2 className="text-lg font-semibold">Settings</h2>
-          <p className="text-sm text-slate-500">
-            Update project details or delete the project.
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 16,
+        maxWidth: 720,
+      }}
+    >
+      {/* General card */}
+      <div className="card">
+        <div style={{ padding: "16px 20px 6px" }}>
+          <h2
+            style={{
+              margin: 0,
+              fontSize: 14,
+              fontWeight: 600,
+              color: "var(--ink-12)",
+            }}
+          >
+            General
+          </h2>
+          <p
+            style={{
+              margin: "2px 0 0",
+              fontSize: 12.5,
+              color: "var(--ink-7)",
+            }}
+          >
+            Basic information about this project.
           </p>
         </div>
-        <label className="block space-y-2 text-sm font-medium text-slate-700">
-          <span>Name</span>
-          <input
-            className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
-            value={form.name}
-            onChange={(event) => setForm({ ...form, name: event.target.value })}
-          />
-        </label>
-        <label className="block space-y-2 text-sm font-medium text-slate-700">
-          <span>Description</span>
-          <textarea
-            className="min-h-24 w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
-            value={form.description}
-            onChange={(event) =>
-              setForm({ ...form, description: event.target.value })
-            }
-          />
-        </label>
-        {error ? <p className="text-sm text-red-600">{error}</p> : null}
-        <button
-          type="submit"
-          disabled={busy}
-          className="h-10 rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {busy ? "Saving..." : "Save"}
-        </button>
-      </form>
 
-      <div className="border-t border-slate-200 pt-5">
-        <button
-          type="button"
-          onClick={destroy}
-          className="h-10 rounded-md border border-red-300 px-4 text-sm font-medium text-red-700 transition hover:bg-red-50"
+        <form
+          onSubmit={save}
+          style={{
+            padding: "12px 20px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 14,
+          }}
         >
-          Delete project
-        </button>
+          <div className="field">
+            <label className="field-label" htmlFor="settings-name">
+              Project name
+            </label>
+            <input
+              className="input"
+              id="settings-name"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="field">
+            <label className="field-label" htmlFor="settings-desc">
+              Description
+            </label>
+            <textarea
+              className="textarea"
+              id="settings-desc"
+              value={form.description ?? ""}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              placeholder="What is this project about?"
+            />
+          </div>
+
+          {error && (
+            <div
+              style={{
+                fontSize: 13,
+                color: "var(--red-9)",
+                background: "var(--red-2)",
+                border: "1px solid var(--red-3)",
+                borderRadius: 6,
+                padding: "8px 12px",
+              }}
+            >
+              {error}
+            </div>
+          )}
+
+          {saved && (
+            <div
+              style={{
+                fontSize: 13,
+                color: "var(--green-9)",
+                background: "var(--green-2)",
+                border: "1px solid var(--green-3)",
+                borderRadius: 6,
+                padding: "8px 12px",
+              }}
+            >
+              Changes saved successfully.
+            </div>
+          )}
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: 8,
+              paddingTop: 4,
+              borderTop: "1px solid var(--ink-2)",
+              marginTop: 4,
+            }}
+          >
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm"
+              onClick={() => { setForm(initial); setSaved(false); }}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={busy}
+              className="btn btn-primary btn-sm"
+            >
+              {busy ? "Saving…" : "Save changes"}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* Danger zone */}
+      <div
+        className="card"
+        style={{
+          borderColor: "var(--red-3)",
+          background: "#FFFCFB",
+        }}
+      >
+        <div style={{ padding: "16px 20px 6px" }}>
+          <h2
+            style={{
+              margin: 0,
+              fontSize: 14,
+              fontWeight: 600,
+              color: "var(--red-9)",
+            }}
+          >
+            Danger zone
+          </h2>
+          <p
+            style={{
+              margin: "2px 0 0",
+              fontSize: 12.5,
+              color: "var(--ink-7)",
+            }}
+          >
+            Irreversible actions. Proceed with care.
+          </p>
+        </div>
+        <div
+          style={{
+            padding: "12px 20px 16px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 16,
+          }}
+        >
+          <div>
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: 500,
+                color: "var(--ink-12)",
+              }}
+            >
+              Delete this project
+            </div>
+            <div style={{ fontSize: 12.5, color: "var(--ink-7)" }}>
+              All tasks, members, and history will be permanently removed.
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={destroy}
+            className="btn btn-secondary btn-sm"
+            style={{ borderColor: "var(--red-3)", color: "var(--red-9)" }}
+          >
+            <svg width="13" height="13" viewBox="0 0 15 15" fill="none">
+              <path
+                d="M5 2H10M2 4H13M4 4L4.5 12C4.5 12.5523 4.94772 13 5.5 13H9.5C10.0523 13 10.5 12.5523 10.5 12L11 4"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Delete project
+          </button>
+        </div>
       </div>
     </div>
   );

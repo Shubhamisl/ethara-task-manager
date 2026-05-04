@@ -47,64 +47,141 @@ export default function SignupPage() {
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="w-full max-w-sm space-y-5 rounded-lg border border-slate-200 bg-white p-8 shadow-sm"
-    >
-      <div>
-        <p className="text-sm font-medium uppercase tracking-[0.18em] text-slate-500">
-          Ethara
-        </p>
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight">
-          Create account
-        </h1>
+    <div className="auth-shell">
+      {/* Form side */}
+      <div className="auth-form-side">
+        <div className="auth-brand">
+          <div className="sb-brand-mark">E</div>
+          <span className="sb-brand-name">Ethara</span>
+        </div>
+
+        <div className="auth-form-wrap">
+          <form className="auth-form" onSubmit={onSubmit}>
+            <h1 className="auth-title">Create your workspace</h1>
+            <p className="auth-sub">Free for teams up to 5. No credit card required.</p>
+
+            <div style={{ height: 28 }} />
+
+            <div className="vstack" style={{ gap: 14 }}>
+              <div className="field">
+                <label className="field-label" htmlFor="name">
+                  Full name
+                </label>
+                <input
+                  className="input"
+                  id="name"
+                  placeholder="Avery Chen"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  required
+                  autoComplete="name"
+                />
+              </div>
+
+              <div className="field">
+                <label className="field-label" htmlFor="email">
+                  Work email
+                </label>
+                <input
+                  className="input"
+                  id="email"
+                  type="email"
+                  placeholder="avery@company.com"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  required
+                  autoComplete="email"
+                />
+              </div>
+
+              <div className="field">
+                <label className="field-label" htmlFor="password">
+                  Password
+                </label>
+                <input
+                  className="input"
+                  id="password"
+                  type="password"
+                  placeholder="At least 8 characters"
+                  value={form.password}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  required
+                  minLength={8}
+                  autoComplete="new-password"
+                />
+                <div className="field-hint">Use a mix of letters, numbers, and symbols.</div>
+              </div>
+
+              {error && (
+                <div
+                  style={{
+                    fontSize: 13,
+                    color: "var(--red-9)",
+                    background: "var(--red-2)",
+                    border: "1px solid var(--red-3)",
+                    borderRadius: 6,
+                    padding: "8px 12px",
+                  }}
+                >
+                  {error}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn btn-primary btn-lg"
+                style={{ width: "100%", justifyContent: "center" }}
+              >
+                {loading ? "Creating workspace…" : "Create workspace"}
+                {!loading && (
+                  <svg width="14" height="14" viewBox="0 0 15 15" fill="none">
+                    <path
+                      d="M3 7.5H12M8.5 3.5L12.5 7.5L8.5 11.5"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+              </button>
+            </div>
+
+            <div style={{ height: 20 }} />
+
+            <p className="auth-foot">
+              Already have an account?{" "}
+              <Link href="/login">Log in</Link>
+            </p>
+          </form>
+        </div>
+
+        <div style={{ fontSize: 11.5, color: "var(--ink-7)" }}>
+          By signing up you agree to our{" "}
+          <a href="#" style={{ color: "var(--ink-9)" }}>
+            Terms
+          </a>{" "}
+          and{" "}
+          <a href="#" style={{ color: "var(--ink-9)" }}>
+            Privacy Policy
+          </a>
+          .
+        </div>
       </div>
-      <label className="block space-y-2 text-sm font-medium text-slate-700">
-        <span>Name</span>
-        <input
-          className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
-          value={form.name}
-          onChange={(event) => setForm({ ...form, name: event.target.value })}
-          required
-        />
-      </label>
-      <label className="block space-y-2 text-sm font-medium text-slate-700">
-        <span>Email</span>
-        <input
-          className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
-          type="email"
-          value={form.email}
-          onChange={(event) => setForm({ ...form, email: event.target.value })}
-          required
-        />
-      </label>
-      <label className="block space-y-2 text-sm font-medium text-slate-700">
-        <span>Password</span>
-        <input
-          className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
-          type="password"
-          value={form.password}
-          onChange={(event) =>
-            setForm({ ...form, password: event.target.value })
-          }
-          required
-          minLength={8}
-        />
-      </label>
-      {error ? <p className="text-sm text-red-600">{error}</p> : null}
-      <button
-        type="submit"
-        disabled={loading}
-        className="h-10 w-full rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {loading ? "Signing up..." : "Sign up"}
-      </button>
-      <p className="text-sm text-slate-600">
-        Have an account?{" "}
-        <Link href="/login" className="font-medium text-slate-950 underline">
-          Log in
-        </Link>
-      </p>
-    </form>
+
+      {/* Art side */}
+      <div className="auth-art-side">
+        <div className="auth-art-grid" />
+        <div />
+        <div className="auth-quote">
+          A task manager built for teams that ship.
+          <div className="auth-quote-author">
+            Plan, assign, and track work without the noise.
+          </div>
+        </div>
+        <div />
+      </div>
+    </div>
   );
 }

@@ -26,7 +26,7 @@ export default function LoginPage() {
     setLoading(false);
 
     if (result?.error) {
-      setError("Invalid credentials");
+      setError("Invalid email or password");
       return;
     }
 
@@ -35,52 +35,216 @@ export default function LoginPage() {
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="w-full max-w-sm space-y-5 rounded-lg border border-slate-200 bg-white p-8 shadow-sm"
-    >
-      <div>
-        <p className="text-sm font-medium uppercase tracking-[0.18em] text-slate-500">
-          Ethara
-        </p>
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight">
-          Log in
-        </h1>
+    <div className="auth-shell">
+      {/* Form side */}
+      <div className="auth-form-side">
+        <div className="auth-brand">
+          <div className="sb-brand-mark">E</div>
+          <span className="sb-brand-name">Ethara</span>
+        </div>
+
+        <div className="auth-form-wrap">
+          <form className="auth-form" onSubmit={onSubmit}>
+            <h1 className="auth-title">Welcome back</h1>
+            <p className="auth-sub">Log in to continue to your workspace.</p>
+
+            <div style={{ height: 28 }} />
+
+            <div className="vstack" style={{ gap: 14 }}>
+              <div className="field">
+                <label className="field-label" htmlFor="email">
+                  Work email
+                </label>
+                <input
+                  className="input"
+                  id="email"
+                  type="email"
+                  placeholder="you@company.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                />
+              </div>
+
+              <div className="field">
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: 6,
+                  }}
+                >
+                  <label className="field-label" htmlFor="password" style={{ marginBottom: 0 }}>
+                    Password
+                  </label>
+                </div>
+                <input
+                  className="input"
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                />
+              </div>
+
+              {error && (
+                <div
+                  style={{
+                    fontSize: 13,
+                    color: "var(--red-9)",
+                    background: "var(--red-2)",
+                    border: "1px solid var(--red-3)",
+                    borderRadius: 6,
+                    padding: "8px 12px",
+                  }}
+                >
+                  {error}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn btn-primary btn-lg"
+                style={{ width: "100%", justifyContent: "center" }}
+              >
+                {loading ? "Logging in…" : "Log in"}
+                {!loading && (
+                  <svg width="14" height="14" viewBox="0 0 15 15" fill="none">
+                    <path
+                      d="M3 7.5H12M8.5 3.5L12.5 7.5L8.5 11.5"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+              </button>
+            </div>
+
+            <div style={{ height: 20 }} />
+
+            <p className="auth-foot">
+              No account?{" "}
+              <Link href="/signup">Create one</Link>
+            </p>
+          </form>
+        </div>
+
+        <div
+          style={{
+            fontSize: 11.5,
+            color: "var(--ink-7)",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <span>© 2026 Ethara, Inc.</span>
+          <span style={{ display: "flex", gap: 14 }}>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Status</a>
+          </span>
+        </div>
       </div>
-      <label className="block space-y-2 text-sm font-medium text-slate-700">
-        <span>Email</span>
-        <input
-          className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          required
-        />
-      </label>
-      <label className="block space-y-2 text-sm font-medium text-slate-700">
-        <span>Password</span>
-        <input
-          className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          required
-        />
-      </label>
-      {error ? <p className="text-sm text-red-600">{error}</p> : null}
-      <button
-        type="submit"
-        disabled={loading}
-        className="h-10 w-full rounded-md bg-slate-950 px-4 text-sm font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {loading ? "Logging in..." : "Log in"}
-      </button>
-      <p className="text-sm text-slate-600">
-        No account?{" "}
-        <Link href="/signup" className="font-medium text-slate-950 underline">
-          Sign up
-        </Link>
-      </p>
-    </form>
+
+      {/* Art side */}
+      <div className="auth-art-side">
+        <div className="auth-art-grid" />
+
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            fontSize: 12,
+            color: "rgba(255,255,255,0.55)",
+          }}
+        >
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
+              background: "var(--green-9)",
+              display: "inline-block",
+            }}
+          />
+          All systems operational
+        </div>
+
+        <div>
+          <div className="auth-quote">
+            &ldquo;Ethara is the calmest task manager we&apos;ve used. It gets out of the
+            way and lets the team ship.&rdquo;
+          </div>
+          <div className="auth-quote-author">
+            Jordan Pierce — Head of Engineering, Northwind
+          </div>
+        </div>
+
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            display: "flex",
+            gap: 32,
+            fontSize: 12,
+            color: "rgba(255,255,255,0.45)",
+          }}
+        >
+          <div>
+            <div
+              style={{
+                fontSize: 22,
+                color: "white",
+                fontFamily: "var(--font-display)",
+                fontWeight: 600,
+                letterSpacing: "-0.025em",
+              }}
+            >
+              4,200+
+            </div>
+            teams
+          </div>
+          <div>
+            <div
+              style={{
+                fontSize: 22,
+                color: "white",
+                fontFamily: "var(--font-display)",
+                fontWeight: 600,
+                letterSpacing: "-0.025em",
+              }}
+            >
+              SOC 2
+            </div>
+            type II certified
+          </div>
+          <div>
+            <div
+              style={{
+                fontSize: 22,
+                color: "white",
+                fontFamily: "var(--font-display)",
+                fontWeight: 600,
+                letterSpacing: "-0.025em",
+              }}
+            >
+              99.99%
+            </div>
+            uptime
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
