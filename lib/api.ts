@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
 import { type ZodError } from "zod";
 import { auth } from "@/lib/auth";
-
-export class RoleError extends Error {
-  constructor(public status: number, message: string) {
-    super(message);
-  }
-}
+import { RoleError } from "@/lib/errors";
+export { RoleError } from "@/lib/errors";
 
 export function apiError(status: number, message: string, details?: unknown) {
   return NextResponse.json({ error: message, ...(details ? { details } : {}) }, { status });
