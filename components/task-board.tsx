@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type TaskStatus = "TODO" | "IN_PROGRESS" | "DONE";
 type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
@@ -77,6 +77,10 @@ export default function TaskBoard({
   const [tasks, setTasks] = useState(initialTasks);
   const [newOpen, setNewOpen] = useState(false);
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    setTasks(initialTasks);
+  }, [initialTasks]);
 
   async function move(taskId: string, status: TaskStatus) {
     const previous = tasks;
@@ -445,7 +449,10 @@ export default function TaskBoard({
           projectId={projectId}
           members={members}
           onClose={() => setNewOpen(false)}
-          onCreated={() => router.refresh()}
+          onCreated={(task) => {
+            setTasks((current) => [task, ...current.filter((item) => item.id !== task.id)]);
+            router.refresh();
+          }}
         />
       )}
     </div>
@@ -461,7 +468,7 @@ function NewTaskDialog({
   projectId: string;
   members: Member[];
   onClose: () => void;
-  onCreated: () => void;
+  onCreated: (task: Task) => void;
 }) {
   const [form, setForm] = useState({
     title: "",
@@ -500,7 +507,8 @@ function NewTaskDialog({
       return;
     }
 
-    onCreated();
+    const task = (await response.json()) as Task;
+    onCreated(task);
     onClose();
   }
 
