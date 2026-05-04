@@ -101,13 +101,10 @@ export default async function ProjectDetailPage({ params, searchParams }: Props)
         >
           <Link
             href="/projects"
+            className="link-muted"
             style={{
-              color: "var(--ink-7)",
               textDecoration: "none",
-              transition: "color 80ms",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--ink-12)")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--ink-7)")}
           >
             Projects
           </Link>

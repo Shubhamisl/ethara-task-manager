@@ -83,22 +83,13 @@ export default async function ProjectsPage() {
                 <Link
                   key={project.id}
                   href={`/projects/${project.id}`}
-                  className="card"
+                  className="card hover-card"
                   style={{
                     textAlign: "left",
                     padding: 0,
                     cursor: "pointer",
                     display: "block",
                     textDecoration: "none",
-                    transition: "border-color 120ms, box-shadow 120ms",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "var(--ink-4)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-md)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "var(--ink-3)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-sm)";
                   }}
                 >
                   <div style={{ padding: "16px 18px 14px" }}>

@@ -243,6 +243,7 @@ export default async function DashboardPage() {
                   return (
                     <li
                       key={task.id}
+                      className="hover-row"
                       style={{
                         display: "grid",
                         gridTemplateColumns: "1fr auto auto auto",
@@ -252,14 +253,7 @@ export default async function DashboardPage() {
                         borderBottom:
                           i === myTasks.length - 1 ? "none" : "1px solid var(--ink-2)",
                         cursor: "pointer",
-                        transition: "background 80ms",
                       }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.background = "var(--ink-1)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.background = "transparent")
-                      }
                     >
                       <div style={{ minWidth: 0 }}>
                         <div
@@ -388,6 +382,7 @@ export default async function DashboardPage() {
                   return (
                     <li
                       key={project.id}
+                      className="hover-row"
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -395,14 +390,7 @@ export default async function DashboardPage() {
                         padding: "10px 16px",
                         borderTop: i === 0 ? "none" : "1px solid var(--ink-2)",
                         cursor: "pointer",
-                        transition: "background 80ms",
                       }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.background = "var(--ink-1)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.background = "transparent")
-                      }
                     >
                       <span
                         className="sb-project-dot"
