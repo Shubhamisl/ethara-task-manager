@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { createTaskSchema } from "@/lib/validators/task";
+import {
+  createTaskSchema,
+  taskPriorityEnum,
+  taskStatusEnum,
+} from "@/lib/validators/task";
 import { apiError, handleApiError, requireSession, zodError } from "@/lib/api";
 import { hasRole } from "@/lib/rbac";
+import type { Prisma } from "@/lib/generated/prisma/client";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -13,22 +18,29 @@ export async function GET(req: NextRequest, { params }: Ctx) {
     await hasRole(user.id, id, "MEMBER");
 
     const url = new URL(req.url);
-    const status = url.searchParams.get("status") ?? undefined;
+    const rawStatus = url.searchParams.get("status") ?? undefined;
     const assigneeId = url.searchParams.get("assigneeId") ?? undefined;
     const overdue = url.searchParams.get("overdue") === "true";
-    const priority = url.searchParams.get("priority") ?? undefined;
+    const rawPriority = url.searchParams.get("priority") ?? undefined;
 
-    const where: Record<string, unknown> = { projectId: id };
-    if (status) where.status = status;
+    const status = rawStatus ? taskStatusEnum.safeParse(rawStatus) : null;
+    if (rawStatus && !status?.success) return apiError(400, "Invalid status filter");
+
+    const priority = rawPriority ? taskPriorityEnum.safeParse(rawPriority) : null;
+    if (rawPriority && !priority?.success)
+      return apiError(400, "Invalid priority filter");
+
+    const where: Prisma.TaskWhereInput = { projectId: id };
+    if (status?.success) where.status = status.data;
     if (assigneeId) where.assigneeId = assigneeId;
-    if (priority) where.priority = priority;
+    if (priority?.success) where.priority = priority.data;
     if (overdue) {
       where.dueDate = { lt: new Date() };
       where.status = { not: "DONE" };
     }
 
     const tasks = await prisma.task.findMany({
-      where: where as any,
+      where,
       orderBy: [{ priority: "desc" }, { createdAt: "desc" }],
       include: { assignee: { select: { id: true, name: true, email: true } } },
     });

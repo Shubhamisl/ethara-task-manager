@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { type ZodError } from "zod";
-import { auth } from "@/lib/auth";
 import { RoleError } from "@/lib/errors";
 export { RoleError } from "@/lib/errors";
 
@@ -13,6 +12,7 @@ export function zodError(err: ZodError) {
 }
 
 export async function requireSession() {
+  const { auth } = await import("@/lib/auth");
   const session = await auth();
   if (!session?.user?.id) throw new RoleError(401, "Unauthorized");
   return session.user as { id: string; email: string; name: string };

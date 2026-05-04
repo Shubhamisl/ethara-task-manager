@@ -26,6 +26,9 @@ describe("project validators", () => {
   it("accepts valid create", () => {
     expect(createProjectSchema.safeParse({ name: "X", description: "" }).success).toBe(true);
   });
+  it("accepts valid update", () => {
+    expect(updateProjectSchema.safeParse({ name: "Renamed" }).success).toBe(true);
+  });
   it("rejects empty name", () => {
     expect(createProjectSchema.safeParse({ name: "", description: "" }).success).toBe(false);
   });
