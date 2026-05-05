@@ -85,6 +85,7 @@ export default function Sidebar({
 
   return (
     <aside
+      className="app-sidebar"
       style={{
         width: 248,
         background: "var(--white)",
@@ -98,6 +99,7 @@ export default function Sidebar({
     >
       {/* Brand */}
       <div
+        className="app-sidebar-brand"
         style={{
           display: "flex",
           alignItems: "center",
@@ -113,7 +115,7 @@ export default function Sidebar({
       </div>
 
       {/* Search */}
-      <div style={{ margin: "12px 12px 4px", position: "relative", flexShrink: 0 }}>
+      <div className="app-sidebar-search" style={{ margin: "12px 12px 4px", position: "relative", flexShrink: 0 }}>
         <span
           style={{
             position: "absolute",
@@ -175,7 +177,7 @@ export default function Sidebar({
       </div>
 
       {/* Nav */}
-      <nav style={{ padding: "8px 8px 0", flex: 1, overflowY: "auto" }}>
+      <nav className="app-sidebar-nav" style={{ padding: "8px 8px 0", flex: 1, overflowY: "auto" }}>
         {navLinks.map((link) => {
           const isActive =
             link.href === "/dashboard"
@@ -222,7 +224,7 @@ export default function Sidebar({
 
         {/* Projects section */}
         {projects.length > 0 && (
-          <>
+          <div className="app-sidebar-projects">
             <div
               style={{
                 padding: "14px 8px 6px",
@@ -302,12 +304,13 @@ export default function Sidebar({
                 </Link>
               );
             })}
-          </>
+          </div>
         )}
       </nav>
 
       {/* Footer */}
       <div
+        className="app-sidebar-footer"
         style={{
           padding: 8,
           borderTop: "1px solid var(--ink-3)",

@@ -22,6 +22,7 @@ export default async function AuthedLayout({
 
   return (
     <div
+      className="app-shell"
       style={{
         display: "grid",
         gridTemplateColumns: "248px 1fr",
@@ -38,6 +39,7 @@ export default async function AuthedLayout({
         projects={projects}
       />
       <main
+        className="app-main"
         style={{
           display: "flex",
           flexDirection: "column",

@@ -213,6 +213,7 @@ export default function ProjectSettings({
           </p>
         </div>
         <div
+          className="danger-actions"
           style={{
             padding: "12px 20px 16px",
             display: "flex",

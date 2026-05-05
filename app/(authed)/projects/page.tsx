@@ -22,6 +22,7 @@ export default async function ProjectsPage() {
 
   return (
     <div
+      className="page-scroll"
       style={{
         flex: 1,
         overflowY: "auto",
@@ -29,9 +30,10 @@ export default async function ProjectsPage() {
         background: "var(--ink-0)",
       }}
     >
-      <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+      <div className="page-container" style={{ maxWidth: 1240, margin: "0 auto" }}>
         {/* Header */}
         <div
+          className="page-header-row"
           style={{
             display: "flex",
             alignItems: "flex-end",
@@ -66,6 +68,7 @@ export default async function ProjectsPage() {
           </div>
         ) : (
           <div
+            className="projects-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(3, 1fr)",

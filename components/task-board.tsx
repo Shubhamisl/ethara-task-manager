@@ -79,6 +79,8 @@ export default function TaskBoard({
   const [search, setSearch] = useState("");
 
   useEffect(() => {
+    // Keep local optimistic board state aligned after server refreshes.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTasks(initialTasks);
   }, [initialTasks]);
 
@@ -107,9 +109,10 @@ export default function TaskBoard({
   const now = new Date();
 
   return (
-    <div>
+    <div className="task-board">
       {/* Filter row */}
       <div
+        className="task-toolbar"
         style={{
           display: "flex",
           alignItems: "center",
@@ -118,6 +121,7 @@ export default function TaskBoard({
         }}
       >
         <div
+          className="task-search"
           style={{
             display: "flex",
             alignItems: "center",
@@ -169,6 +173,7 @@ export default function TaskBoard({
 
       {/* Kanban columns */}
       <div
+        className="kanban-grid"
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
@@ -400,6 +405,19 @@ export default function TaskBoard({
                           </div>
                         )}
                       </div>
+                      <select
+                        className="mobile-status-select input select-field"
+                        value={task.status}
+                        disabled={role !== "ADMIN" && task.assigneeId !== currentUserId}
+                        onChange={(e) => move(task.id, e.target.value as TaskStatus)}
+                        aria-label={`Move ${task.title}`}
+                      >
+                        {COLUMNS.map((item) => (
+                          <option key={item.status} value={item.status}>
+                            {item.label}
+                          </option>
+                        ))}
+                      </select>
                     </li>
                   );
                 })}
@@ -575,7 +593,7 @@ function NewTaskDialog({
             style={{ border: "none", boxShadow: "none", padding: "0 0", minHeight: 60 }}
           />
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div className="dialog-form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             <div className="field">
               <label className="field-label">Priority</label>
               <select

@@ -135,6 +135,7 @@ export default function MemberTable({
 
         {/* Search */}
         <div
+          className="member-search"
           style={{
             display: "flex",
             alignItems: "center",
@@ -168,6 +169,7 @@ export default function MemberTable({
         {/* Invite form — admin only */}
         {role === "ADMIN" && (
           <form
+            className="member-invite-form"
             onSubmit={add}
             style={{ display: "flex", alignItems: "center", gap: 6 }}
           >
@@ -216,6 +218,7 @@ export default function MemberTable({
 
       {/* Table header */}
       <div
+        className="member-table-head"
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 220px 140px 56px",
@@ -239,6 +242,7 @@ export default function MemberTable({
       {filtered.map((member, i) => (
         <div
           key={member.id}
+          className="member-table-row"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 220px 140px 56px",

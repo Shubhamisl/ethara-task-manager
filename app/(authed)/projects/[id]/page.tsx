@@ -80,6 +80,7 @@ export default async function ProjectDetailPage({ params, searchParams }: Props)
 
   return (
     <div
+      className="page-scroll"
       style={{
         flex: 1,
         overflowY: "auto",
@@ -87,9 +88,10 @@ export default async function ProjectDetailPage({ params, searchParams }: Props)
         background: "var(--ink-0)",
       }}
     >
-      <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+      <div className="page-container" style={{ maxWidth: 1240, margin: "0 auto" }}>
         {/* Breadcrumb */}
         <div
+          className="project-crumb"
           style={{
             fontSize: 13,
             color: "var(--ink-7)",
@@ -116,6 +118,7 @@ export default async function ProjectDetailPage({ params, searchParams }: Props)
 
         {/* Project header */}
         <div
+          className="project-header"
           style={{
             display: "flex",
             alignItems: "flex-start",
@@ -144,6 +147,7 @@ export default async function ProjectDetailPage({ params, searchParams }: Props)
 
           <div style={{ flex: 1, minWidth: 0 }}>
             <div
+              className="project-title-row"
               style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}
             >
               <h1 className="page-title" style={{ fontSize: 22 }}>
@@ -157,6 +161,7 @@ export default async function ProjectDetailPage({ params, searchParams }: Props)
               </p>
             )}
             <div
+              className="project-meta-row"
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -190,7 +195,7 @@ export default async function ProjectDetailPage({ params, searchParams }: Props)
           </div>
 
           {/* Avatar stack */}
-          <div style={{ display: "inline-flex", alignItems: "center" }}>
+          <div className="project-avatar-stack" style={{ display: "inline-flex", alignItems: "center" }}>
             {project.memberships.slice(0, 5).map((m, idx) => (
               <div
                 key={m.user.id}

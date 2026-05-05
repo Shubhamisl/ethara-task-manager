@@ -102,6 +102,7 @@ export default async function DashboardPage() {
 
   return (
     <div
+      className="page-scroll"
       style={{
         flex: 1,
         overflowY: "auto",
@@ -109,9 +110,10 @@ export default async function DashboardPage() {
         background: "var(--ink-0)",
       }}
     >
-      <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+      <div className="page-container" style={{ maxWidth: 1240, margin: "0 auto" }}>
         {/* Page header */}
         <div
+          className="page-header-row"
           style={{
             display: "flex",
             alignItems: "flex-end",
@@ -160,6 +162,7 @@ export default async function DashboardPage() {
 
         {/* Metric cards */}
         <div
+          className="metrics-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(4, 1fr)",
@@ -192,6 +195,7 @@ export default async function DashboardPage() {
 
         {/* Two-column grid */}
         <div
+          className="dashboard-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "1.6fr 1fr",
@@ -243,7 +247,7 @@ export default async function DashboardPage() {
                   return (
                     <li
                       key={task.id}
-                      className="hover-row"
+                      className="hover-row dashboard-task-row"
                       style={{
                         display: "grid",
                         gridTemplateColumns: "1fr auto auto auto",
