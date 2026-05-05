@@ -1,4 +1,7 @@
 import { beforeAll } from "vitest";
+import { loadLocalEnv } from "@/lib/load-env";
+
+loadLocalEnv();
 
 beforeAll(() => {
   process.env.NEXTAUTH_SECRET = "test-secret-please-change";

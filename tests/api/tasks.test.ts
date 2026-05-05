@@ -1,11 +1,11 @@
 import type { NextRequest } from "next/server";
 import { beforeEach, expect, it, vi } from "vitest";
 import { prisma } from "@/lib/db";
-import { makeUser, mockSession, resetDb } from "../helpers";
+import { makeUser, mockSession, resetDbOrSkip } from "../helpers";
 
-beforeEach(async () => {
+beforeEach(async (context) => {
   vi.resetModules();
-  await resetDb();
+  await resetDbOrSkip(context);
 });
 
 it("rejects MEMBER changing title", async () => {

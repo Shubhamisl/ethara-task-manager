@@ -1,4 +1,7 @@
 import { defineConfig } from "prisma/config";
+import { loadLocalEnv } from "./lib/load-env";
+
+loadLocalEnv();
 
 export default defineConfig({
   schema: "prisma/schema.prisma",

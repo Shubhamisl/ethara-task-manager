@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { beforeEach, describe, expect, it } from "vitest";
 import { POST as signup } from "@/app/api/auth/signup/route";
-import { resetDb } from "../helpers";
+import { resetDbOrSkip } from "../helpers";
 
 function req(body: unknown) {
   return new Request("http://localhost/api/auth/signup", {
@@ -12,8 +12,8 @@ function req(body: unknown) {
 }
 
 describe("POST /api/auth/signup", () => {
-  beforeEach(async () => {
-    await resetDb();
+  beforeEach(async (context) => {
+    await resetDbOrSkip(context);
   });
 
   it("creates a user", async () => {

@@ -433,7 +433,7 @@ function AuthPreview() {
           <div className="auth-art-grid" />
           <div style={{ position: "relative", zIndex: 1, color: "rgba(255,255,255,.55)", fontSize: 12 }}>All systems operational</div>
           <div>
-            <div className="auth-quote">"Ethara is the calmest task manager we have used. It gets out of the way and lets the team ship."</div>
+            <div className="auth-quote">&quot;Ethara is the calmest task manager we have used. It gets out of the way and lets the team ship.&quot;</div>
             <div className="auth-quote-author">Jordan Pierce - Head of Engineering</div>
           </div>
           <div style={{ position: "relative", zIndex: 1, display: "flex", gap: 32, color: "rgba(255,255,255,.45)", fontSize: 12 }}>
