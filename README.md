@@ -2,8 +2,6 @@
 
 A full-stack team task management web app for creating projects, inviting members, assigning tasks, and tracking progress through a clean dashboard and Kanban-style task board.
 
-> **Documentation note:** older planning/spec files in `docs/superpowers` may be outdated. This README is written to describe the current GitHub project structure and runnable app.
-
 ## Links
 
 - **Source code:** https://github.com/Shubhamisl/ethara-task-manager
